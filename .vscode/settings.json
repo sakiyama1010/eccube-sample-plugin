@@ -1,0 +1,12 @@
+{
+    "phpcs.enable": false,
+    "files.watcherExclude": {
+        "**/vendor/*/**": true
+    },
+    "files.exclude": {
+        "**/.vscode": true
+    },
+    "files.eol": "\n",
+    "files.autoGuessEncoding": true,
+    "search.useIgnoreFiles": false
+}

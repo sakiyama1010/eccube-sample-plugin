@@ -1,0 +1,32 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends '@admin/default_frame.twig' %}
+
+{% set menus = ['sample', 'sample_edit'] %}
+
+{% block title %}{{ 'admin.sample.sample_registration'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.sample.sample_management'|trans }}{% endblock %}
+
+
+{% block javascript %}
+    <script>
+    </script>
+{% endblock javascript %}
+
+{% block main %}
+<form name="sample_form" role="form" id="sample_form" method="post" class="h-adr"
+    novalidate>
+    {#action="{%- if sample.id %}{{ url('admin_sample_edit', { id : sample.id }) }}{% else %}{{ url('admin_sample_new') }}{% endif -%}"#}
+
+テスト編集画面
+
+</form>
+{% endblock %}

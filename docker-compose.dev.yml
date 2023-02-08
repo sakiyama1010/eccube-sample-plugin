@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  ec-cube:
+    entrypoint: >
+      /bin/bash -c "
+      docker-php-entrypoint ls &&
+      apache2-foreground
+      "
+    environment:
+      USER_ID: ${UID:-}
+      GROUP_ID: ${GID:-}
+    volumes:
+      - ".:/var/www/plugin:cached"

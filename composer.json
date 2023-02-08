@@ -1,0 +1,13 @@
+{
+    "name": "sakiyama/management-plugin",
+    "version": "1.0.0",
+    "description": "management Plugin",
+    "type": "eccube-plugin",
+    "require": {
+        "ec-cube/plugin-installer": "^2.0"
+    },
+    "extra": {
+        "code": "management"
+    }
+}
+
