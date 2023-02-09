@@ -22,6 +22,8 @@ bin/console eccube:plugin:install --code management
 bin/console eccube:plugin:enable --code management
 # キャッシュクリア
 bin/console cache:clear --no-warmup
+# composerで使えるコマンド確認
+composer run-script -l
 ```
 
 ## 課題メモ
