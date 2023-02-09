@@ -24,7 +24,6 @@ use Eccube\Doctrine\Query\Queries;
  */
 class SampleRepository extends AbstractRepository
 {
-
     /**
      * @var Queries
      */
@@ -34,7 +33,7 @@ class SampleRepository extends AbstractRepository
      * @param RegistryInterface $registry
      * @param Queries $queries
      */
-    public function __construct(RegistryInterface $registry,Queries $queries)
+    public function __construct(RegistryInterface $registry, Queries $queries)
     {
         parent::__construct($registry, Management::class);
         $this->queries = $queries;
