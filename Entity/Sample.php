@@ -26,7 +26,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Sample extends AbstractEntity
 {
     /**
-     * @var int id
+     * @var int ID項目のサンプル
      *
      * @ORM\Column(name="id", type="integer", options={"unsigned":true})
      * @ORM\Id
@@ -35,26 +35,32 @@ class Sample extends AbstractEntity
     private $id;
 
     /**
-     * @var string 概要
+     * @var string 必須文字列サンプル
      *
-     * @ORM\Column(name="summary", type="string", length=100)
-     * @Assert\NotBlank
+     * @ORM\Column(name="name", type="string", length=100)
      * @Assert\Length(max=100)
      */
     private $name;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+    /**
+     * @var string|null NULL許容文字列サンプル
+     *
+     * @ORM\Column(name="detail", type="string", length=255, nullable=true)
+     */
+    private $detail;
 
-    public function getSummary(): ?string
-    {
-        return $this->summary;
-    }
+    /**
+     * @var string|null 数値サンプル
+     *
+     * @ORM\Column(name="count", type="decimal", precision=12, scale=2, nullable=true, options={"unsigned":true,"default":0})
+     */
+    private $count = 0;
 
-    public function setSummary(?string $summary)
-    {
-        $this->summary = $summary;
-    }
+    /**
+     * @var \DateTime 日付サンプル
+     *
+     * @ORM\Column(name="create_date", type="datetimetz")
+     */
+    private $create_date;
+
 }

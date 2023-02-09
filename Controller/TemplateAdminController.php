@@ -16,6 +16,7 @@ namespace Plugin\management\Controller;
 use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
+use Plugin\management\Repository\SampleRepository;
 use Eccube\Repository\Master\PageMaxRepository;
 use Eccube\Service\CsvExportService;
 use Eccube\Util\FormUtil;
@@ -24,6 +25,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Form;
+use Plugin\management\Form\Type\Admin\SearchSampleType;
 
 /**
  * 自己学習用クラス(Admin)
@@ -44,22 +46,31 @@ class TemplateAdminController extends AbstractController
     protected $pageMaxRepository;
 
     /**
+     * 自己学習用リポジトリ
+     * @var SampleRepository
+     */
+    protected $sampleRepository;
+
+    /**
      * コンストラクタ
+     * @param SampleRepository $sampleRepository
      * @param PageMaxRepository $pageMaxRepository
      * @param CsvExportService $csvExportService
      */
     public function __construct(
+        SampleRepository $sampleRepository,
         PageMaxRepository $pageMaxRepository,
         CsvExportService $csvExportService
     )
     {
+        $this->sampleRepository = $sampleRepository;
         $this->pageMaxRepository = $pageMaxRepository;
         $this->csvExportService = $csvExportService;
     }
 
     /**
      * 一覧画面
-     * @Route("/%eccube_admin_route%/sample", name="admin_sample", methods={"GET"})
+     * @Route("/%eccube_admin_route%/sample", name="admin_sample", methods={"GET", "POST"})
      * @Route("/%eccube_admin_route%/sample/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_sample_page", methods={"GET", "POST"})
      * @Template("@management/admin/sample/index.twig")
      * @param Request リクエスト
@@ -68,10 +79,66 @@ class TemplateAdminController extends AbstractController
      */
     public function index(Request $request, PaginatorInterface $paginator, $page_no = null)
     {
+        $session = $this->session;
+        $builder = $this->formFactory->createBuilder(SearchSampleType::class);
+        $searchForm = $builder->getForm();
+
+        $pageMaxis = $this->pageMaxRepository->findAll();
+        $pageCount = $session->get('eccube.admin.sample.search.page_count', $this->eccubeConfig['eccube_default_page_count']);
+        $pageCountParam = $request->get('page_count');
+        if ($pageCountParam && is_numeric($pageCountParam)) {
+            foreach ($pageMaxis as $pageMax) {
+                if ($pageCountParam == $pageMax->getName()) {
+                    $pageCount = $pageMax->getName();
+                    $session->set('eccube.admin.sample.search.page_count', $pageCount);
+                    break;
+                }
+            }
+        }
+
+        if ('POST' === $request->getMethod()) {
+            $searchForm->handleRequest($request);
+            if ($searchForm->isValid()) {
+                $searchData = $searchForm->getData();
+                $page_no = 1;
+
+                $session->set('eccube.admin.sample.search', FormUtil::getViewData($searchForm));
+                $session->set('eccube.admin.sample.search.page_no', $page_no);
+            } else {
+                return [
+                    'searchForm' => $searchForm->createView(),
+                    'pagination' => [],
+                    'pageMaxis' => $pageMaxis,
+                    'page_no' => $page_no,
+                    'page_count' => $pageCount,
+                    'has_errors' => true,
+                ];
+            }
+        } else {
+            if (null !== $page_no || $request->get('resume')) {
+                if ($page_no) {
+                    $session->set('eccube.admin.sample.search.page_no', (int) $page_no);
+                } else {
+                    $page_no = $session->get('eccube.admin.sample.search.page_no', 1);
+                }
+                $viewData = $session->get('eccube.admin.sample.search', []);
+            } else {
+                $page_no = 1;
+                $viewData = FormUtil::getViewData($searchForm);
+                $session->set('eccube.admin.sample.search', $viewData);
+                $session->set('eccube.admin.sample.search.page_no', $page_no);
+            }
+            $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
+        }
+
+        /** @var QueryBuilder $qb */
+        $qb = $this->sampleRepository->getQueryBuilderBySearchData($searchData);
+
 
         // pagination:ページング情報
         // has_errors:処理内容にエラーがあったかどうか
         return [
+            'searchForm' => $searchForm->createView(),
             'pagination' => [],
             'has_errors' => false,
         ];

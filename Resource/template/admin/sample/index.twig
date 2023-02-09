@@ -25,8 +25,8 @@ file that was distributed with this source code.
                     <div class="col-6">
                         <div class="mb-2">
                             <label class="col-form-label" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.sample.multi_search_label'|trans }}">{{ 'admin.sample.multi_search_label'|trans }}<i class="fa fa-question-circle fa-lg ms-1"></i></label>
-                            {#{{ form_widget(searchForm.multi) }}#}
-                            {#{{ form_errors(searchForm.multi) }}#}
+                            {{ form_widget(searchForm.multi) }}
+                            {{ form_errors(searchForm.multi) }}
                         </div>
                         <div class="d-inline-block mb-3 collapsed" data-bs-toggle="collapse" href="#searchDetail" aria-expanded="false" aria-controls="searchDetail"><a><i class="fa fw-bold me-1 fa-plus-square-o"></i><span class="fw-bold">{{ 'admin.common.search_detail'|trans }}</span></a></div>
                     </div>
