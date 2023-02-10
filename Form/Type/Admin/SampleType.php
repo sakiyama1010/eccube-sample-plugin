@@ -22,7 +22,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 // これがないと`$builder->getForm();`で怒られる
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 
-class SearchSampleType extends AbstractType
+class SampleType extends AbstractType
 {
     /**
      * @var EccubeConfig
@@ -43,8 +43,7 @@ class SearchSampleType extends AbstractType
     public function __construct(
         SampleRepository $SampleRepository,
         EccubeConfig $eccubeConfig
-    )
-    {
+    ) {
         $this->eccubeConfig = $eccubeConfig;
         $this->SampleRepository = $SampleRepository;
     }
@@ -56,13 +55,6 @@ class SearchSampleType extends AbstractType
     {
         $months = range(1, 12);
         $builder
-            ->add('multi', TextType::class, [
-                'label' => 'admin.sample.multi_search_label',
-                'required' => false,
-                'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
-                ],
-            ])
             ->add('name', TextType::class, [
                 'label' => 'admin.sample.name',
                 'required' => false,
@@ -77,15 +69,6 @@ class SearchSampleType extends AbstractType
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                 ],
             ])
-            // ソート用
-            ->add('sortkey', HiddenType::class, [
-                'label' => 'admin.list.sort.key',
-                'required' => false,
-            ])
-            ->add('sorttype', HiddenType::class, [
-                'label' => 'admin.list.sort.type',
-                'required' => false,
-            ])
         ;
     }
 
@@ -94,6 +77,6 @@ class SearchSampleType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'admin_search_sample';
+        return 'admin_sample';
     }
 }

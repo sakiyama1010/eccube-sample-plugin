@@ -79,10 +79,14 @@ class TemplateAdminController extends AbstractController
      */
     public function index(Request $request, PaginatorInterface $paginator, $page_no = null)
     {
+        // ページ番号を保持する為セッションを利用
         $session = $this->session;
+
+        // フォーム作成
         $builder = $this->formFactory->createBuilder(SearchSampleType::class);
         $searchForm = $builder->getForm();
 
+        // ページング設定
         $pageMaxis = $this->pageMaxRepository->findAll();
         $pageCount = $session->get('eccube.admin.sample.search.page_count', $this->eccubeConfig['eccube_default_page_count']);
         $pageCountParam = $request->get('page_count');
@@ -96,12 +100,14 @@ class TemplateAdminController extends AbstractController
             }
         }
 
+        // POSTの場合
         if ('POST' === $request->getMethod()) {
+            // リクエスト内容を良しなに設定する？？
             $searchForm->handleRequest($request);
             if ($searchForm->isValid()) {
+
                 $searchData = $searchForm->getData();
                 $page_no = 1;
-
                 $session->set('eccube.admin.sample.search', FormUtil::getViewData($searchForm));
                 $session->set('eccube.admin.sample.search.page_no', $page_no);
             } else {
@@ -134,12 +140,14 @@ class TemplateAdminController extends AbstractController
         /** @var QueryBuilder $qb */
         $qb = $this->sampleRepository->getQueryBuilderBySearchData($searchData);
 
-
         // pagination:ページング情報
         // has_errors:処理内容にエラーがあったかどうか
         return [
             'searchForm' => $searchForm->createView(),
             'pagination' => [],
+            'pageMaxis' => $pageMaxis,
+            'page_no' => $page_no,
+            'page_count' => $pageCount,
             'has_errors' => false,
         ];
     }
