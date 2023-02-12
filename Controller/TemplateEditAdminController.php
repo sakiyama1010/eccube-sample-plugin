@@ -24,8 +24,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Form;
-use Plugin\management\Form\Type\Admin\SearchSampleType;
+use Plugin\management\Form\Type\Admin\SampleType;
 use Plugin\management\Entity\Sample;
+use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * 自己学習用クラス(Adminの登録修正画面)
@@ -44,7 +46,7 @@ class TemplateEditAdminController extends AbstractController
      * @param SampleRepository $sampleRepository
      */
     public function __construct(
-        SampleRepository $sampleRepository,
+        SampleRepository $sampleRepository
     )
     {
         $this->sampleRepository = $sampleRepository;
@@ -96,15 +98,13 @@ class TemplateEditAdminController extends AbstractController
     /**
      * コントローラテスト
      * @Route("/%eccube_admin_route%/sample/test/{id1}/{id2}", name="admin_sample_test", methods={"GET", "POST"})
-     * @Template("@management/admin/sample/edit.twig")
      * @param Request リクエスト
-     * @param RouterInterface 
      * @param id1 該当データのID
      * @param id2 該当データのID
      */
-    public function test(Request $request, RouterInterface $router, $id1 = null, $id2 = null)
+    public function test(Request $request, $id1 = null, $id2 = null): JsonResponse
     {
         LOG_DEBUG("ログテスト", []);
-        return [];
+        return $this->json(['response' => 'ok']);
     }
 }

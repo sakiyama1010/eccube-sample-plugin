@@ -37,10 +37,10 @@ class Sample extends AbstractEntity
     /**
      * @var string 必須文字列サンプル
      *
-     * @ORM\Column(name="name", type="string", length=100)
+     * @ORM\Column(name="title", type="string", length=100)
      * @Assert\Length(max=100)
      */
-    private $name;
+    private $title;
 
     /**
      * @var string|null NULL許容文字列サンプル
@@ -63,4 +63,19 @@ class Sample extends AbstractEntity
      */
     private $create_date;
 
+    /**
+     * @return Plugin\management\Entity\Sample\title
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @return Plugin\management\Entity\Sample\detail|null
+     */
+    public function getDetail()
+    {
+        return $this->detail;
+    }
 }

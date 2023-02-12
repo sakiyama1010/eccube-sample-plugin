@@ -55,8 +55,8 @@ class SampleType extends AbstractType
     {
         $months = range(1, 12);
         $builder
-            ->add('name', TextType::class, [
-                'label' => 'admin.sample.name',
+            ->add('title', TextType::class, [
+                'label' => 'admin.sample.title',
                 'required' => false,
                 'constraints' => [
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),

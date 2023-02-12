@@ -11,4 +11,6 @@ admin.sample.sample_registration: サンプル登録
 admin.sample.sample_csv_upload: サンプルCSV登録
 
 admin.sample.multi_search_label: マルチ検索
-admin.sample.name: サンプル名
+admin.sample.title: サンプル名
+admin.sample.detail: 詳細
+admin.sample.sample_info: サンプル情報
