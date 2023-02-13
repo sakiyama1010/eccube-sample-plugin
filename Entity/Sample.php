@@ -64,7 +64,7 @@ class Sample extends AbstractEntity
     private $create_date;
 
     /**
-     * @return Plugin\management\Entity\Sample\title
+     * @return string
      */
     public function getTitle()
     {
@@ -72,10 +72,50 @@ class Sample extends AbstractEntity
     }
 
     /**
-     * @return Plugin\management\Entity\Sample\detail|null
+     * @param string|null $title
+     * @return Sample
+     */
+    public function setTitle(string $title = null)
+    {
+        $this->title = $title;
+        return $this;
+    }
+
+    /**
+     * @return string|null
      */
     public function getDetail()
     {
         return $this->detail;
     }
+
+    /**
+     * @param string|null $detail
+     * @return Sample
+     */
+    public function setDetail(string $detail = null)
+    {
+        $this->detail = $detail;
+        return $this;
+    }
+
+    /**
+     * @return int|null
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param \DateTime|null $create_date
+     * @return Sample
+     */
+    public function setCreateDate(\DateTime $create_date = null)
+    {
+        $this->create_date = $create_date;
+        return $this;
+    }
+
+
 }

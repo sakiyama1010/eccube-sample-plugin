@@ -14,20 +14,15 @@
 namespace Plugin\management\Controller;
 
 use Eccube\Controller\AbstractController;
-use Eccube\Event\EccubeEvents;
-use Eccube\Event\EventArgs;
 use Plugin\management\Repository\SampleRepository;
-use Eccube\Repository\Master\PageMaxRepository;
-use Eccube\Util\FormUtil;
-use Knp\Component\Pager\PaginatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Form\Form;
 use Plugin\management\Form\Type\Admin\SampleType;
 use Plugin\management\Entity\Sample;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+// ないとエラーがでる[Semantical Error] The annotation "@Template" in method
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 
 /**
  * 自己学習用クラス(Adminの登録修正画面)
@@ -81,14 +76,41 @@ class TemplateEditAdminController extends AbstractController
         $editform->handleRequest($request);
 
         // 処理ボタン押下
-        if ($editform->isSubmitted() && $editform->isValid()) {
+        if ($editform->isSubmitted()) {
+            if ($editform->isValid()) {
 
-            // 更新画面にリダイレクト
-            return $this->redirectToRoute('admin_sample_edit', [
-                'id' => $Sample->getId(),
-            ]);
+                // TODO:フックポイントを設定
+                // ECCUBEプラグインを見るとどれもイベント登録してないなぜ・・・
+                // https://xoops.ec-cube.net/modules/newbb/viewtopic.php?topic_id=26473&forum=11
+                //$event = new EventArgs(
+                //    [],
+                //    $request
+                //);
+                //$this->eventDispatcher->dispatch($event, 'hookpoint.key');
+
+                // フォーム内容で更新
+                $Sample = $editform->getData();
+                // 現在日時を設定
+                $Sample->setCreateDate(new \DateTime());
+                $this->entityManager->persist($Sample);
+                $this->entityManager->flush($Sample);
+
+                // 成功ログと成功アラート設定
+                log_info('Sample edit success');
+                $this->addSuccess('admin.sample.save.complete', 'admin');
+
+                // 更新画面にリダイレクト
+                return $this->redirectToRoute(
+                    'admin_sample_edit',
+                    ['id' => $Sample->getId()]
+                );
+            } else {
+                
+                // 失敗ログと失敗アラート設定
+                log_info($editform->getErrors(true));
+                $this->addError('admin.sample.save.failed', 'admin');
+            }
         }
-
         return [
             'form' => $editform->createView(),
             'Sample' => $Sample

@@ -15,10 +15,11 @@ file that was distributed with this source code.
 {% block title %}{{ 'admin.sample.sample_list'|trans }}{% endblock %}
 {% block sub_title %}{{ 'admin.sample.sample_management'|trans }}{% endblock %}
 
+{% form_theme searchForm '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
 {% block main %}
     <form name="search_form" id="search_form" method="post" action="">
-        {#{{ form_widget(searchForm._token) }}#}
+        {{ form_widget(searchForm._token) }}
         <div class="c-outsideBlock">
             <div class="c-outsideBlock__contents">
                 <div class="row justify-content-start">
@@ -59,6 +60,7 @@ file that was distributed with this source code.
             <div class="c-contentsArea__primaryCol">
                 <div class="c-primaryCol">
                     {% if pagination and pagination.totalItemCount %}
+                    検索結果あり
                         <div class="row justify-content-between mb-2">
                             <div class="col-6"></div>
 
@@ -78,8 +80,8 @@ file that was distributed with this source code.
                                 {# CSV設定関係 #}
                                 <div class="d-inline-block">
                                     <div class="btn-group" role="group">
-                                        <a class="btn btn-ec-regular" href="{{ url('admin_sample_export') }}"><i class="fa fa-cloud-download me-1 text-secondary"></i><span>{{ 'admin.common.csv_download'|trans }}</span></a>
-                                        <a class="btn btn-ec-regular" href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_sample') }) }}"><i class="fa fa-cog me-1 text-secondary"></i><span>{{ 'admin.setting.shop.csv_setting'|trans }}</span></a>
+                                        {# <a class="btn btn-ec-regular" href="{{ url('admin_sample_export') }}"><i class="fa fa-cloud-download me-1 text-secondary"></i><span>{{ 'admin.common.csv_download'|trans }}</span></a> #}
+                                        {# <a class="btn btn-ec-regular" href="{{ url('admin_setting_shop_csv', { id : constant('\\Eccube\\Entity\\Master\\CsvType::CSV_TYPE_sample') }) }}"><i class="fa fa-cog me-1 text-secondary"></i><span>{{ 'admin.setting.shop.csv_setting'|trans }}</span></a> #}
                                     </div>
                                 </div>
                             </div>
@@ -133,6 +135,7 @@ file that was distributed with this source code.
                             </div>
                         </div>
                     {% elseif has_errors %}
+                    検索エラー
                         <div class="card rounded border-0">
                             <div class="card-body p-4">
                                 <div class="text-center text-muted mb-4 h5">{{ 'admin.common.search_invalid_condition'|trans }}</div>
@@ -140,6 +143,7 @@ file that was distributed with this source code.
                             </div>
                         </div>
                     {% else %}
+                    検索0件{{ pagination.totalItemCount}}
                         <div class="card rounded border-0">
                             <div class="card-body p-4">
                                 <div class="text-center text-muted mb-4 h5">{{ 'admin.common.search_no_result'|trans }}</div>

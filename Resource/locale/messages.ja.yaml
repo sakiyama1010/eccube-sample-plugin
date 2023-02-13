@@ -2,7 +2,10 @@
 admin.nav.sample.list: サンプル管理一覧
 admin.nav.sample.edit: サンプル登録
 admin.nav.sample.csv_import: サンプルCSV登録
+
 # flash messages
+admin.sample.save.complete: サンプル情報登録しました。
+admin.sample.save.failed: サンプル情報登録に失敗しました。
 
 # twig
 admin.sample.sample_management: サンプル管理

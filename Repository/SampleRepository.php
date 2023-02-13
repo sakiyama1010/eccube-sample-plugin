@@ -17,6 +17,7 @@ use Eccube\Repository\AbstractRepository;
 use Plugin\management\Entity\Sample;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Doctrine\Query\Queries;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * 自己学習用リポジトリ
@@ -39,10 +40,14 @@ class SampleRepository extends AbstractRepository
         $this->queries = $queries;
     }
 
+    /**
+     * @param array $searchData
+     * @return QueryBuilder
+     */
     public function getQueryBuilderBySearchData($searchData)
     {
-        $qb = $this->createQueryBuilder('c')
-            ->select('c');
+        $qb = $this->createQueryBuilder('s')
+            ->select('s');
 
         if (isset($searchData['multi']) && StringUtil::isNotBlank($searchData['multi'])) {
             // スペース除去
@@ -51,12 +56,11 @@ class SampleRepository extends AbstractRepository
             if ($id && $id > '2147483647' && $this->isPostgreSQL()) {
                 $id = null;
             }
-            $qb
-                ->andWhere("c.id = :id")
-                ->setParameter('id', $id);
+            //$qb
+            //    ->andWhere("s.id = :id")
+            //    ->setParameter('id', $id);
         }
 
-        // TODO:第一引数のベタ書き
-        return $this->queries->customize('Sample.getQueryBuilderBySearchData', $qb, $searchData);
+        return $qb;
     }
 }

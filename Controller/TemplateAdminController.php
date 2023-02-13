@@ -17,6 +17,7 @@ use Eccube\Controller\AbstractController;
 use Eccube\Event\EccubeEvents;
 use Eccube\Event\EventArgs;
 use Plugin\management\Repository\SampleRepository;
+use Plugin\management\Repository\SampleConfigRepository;
 use Eccube\Repository\Master\PageMaxRepository;
 use Eccube\Service\CsvExportService;
 use Eccube\Util\FormUtil;
@@ -52,18 +53,27 @@ class TemplateAdminController extends AbstractController
     protected $sampleRepository;
 
     /**
+     * 自己学習用リポジトリ
+     * @var SampleConfigRepository
+     */
+    protected $sampleConfigRepository;
+
+    /**
      * コンストラクタ
      * @param SampleRepository $sampleRepository
+     * @param SampleConfigRepository $sampleConfigRepository
      * @param PageMaxRepository $pageMaxRepository
      * @param CsvExportService $csvExportService
      */
     public function __construct(
         SampleRepository $sampleRepository,
+        SampleConfigRepository $sampleConfigRepository,
         PageMaxRepository $pageMaxRepository,
         CsvExportService $csvExportService
     )
     {
         $this->sampleRepository = $sampleRepository;
+        $this->sampleConfigRepository = $sampleConfigRepository;
         $this->pageMaxRepository = $pageMaxRepository;
         $this->csvExportService = $csvExportService;
     }
@@ -81,6 +91,10 @@ class TemplateAdminController extends AbstractController
     {
         // ページ番号を保持する為セッションを利用
         $session = $this->session;
+
+        //$CsvType = $this->sampleConfigRepository
+        //    ->get()
+        //    ->getCsvType();
 
         // フォーム作成
         $builder = $this->formFactory->createBuilder(SearchSampleType::class);
@@ -102,7 +116,7 @@ class TemplateAdminController extends AbstractController
 
         // POSTの場合
         if ('POST' === $request->getMethod()) {
-            // リクエスト内容を良しなに設定する？？
+
             $searchForm->handleRequest($request);
             if ($searchForm->isValid()) {
 
@@ -111,12 +125,14 @@ class TemplateAdminController extends AbstractController
                 $session->set('eccube.admin.sample.search', FormUtil::getViewData($searchForm));
                 $session->set('eccube.admin.sample.search.page_no', $page_no);
             } else {
+                log_info($searchForm->getErrors(true));
                 return [
                     'searchForm' => $searchForm->createView(),
                     'pagination' => [],
                     'pageMaxis' => $pageMaxis,
                     'page_no' => $page_no,
                     'page_count' => $pageCount,
+                    //'CsvType' => $CsvType,
                     'has_errors' => true,
                 ];
             }
@@ -137,17 +153,23 @@ class TemplateAdminController extends AbstractController
             $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
         }
 
-        /** @var QueryBuilder $qb */
         $qb = $this->sampleRepository->getQueryBuilderBySearchData($searchData);
+
+        $pagination = $paginator->paginate(
+            $qb,
+            $page_no,
+            $pageCount
+        );
 
         // pagination:ページング情報
         // has_errors:処理内容にエラーがあったかどうか
         return [
             'searchForm' => $searchForm->createView(),
-            'pagination' => [],
+            'pagination' => $pagination,
             'pageMaxis' => $pageMaxis,
             'page_no' => $page_no,
             'page_count' => $pageCount,
+            //'CsvType' => $CsvType,
             'has_errors' => false,
         ];
     }
