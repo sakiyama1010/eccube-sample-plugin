@@ -14,14 +14,15 @@
 namespace Plugin\management\Repository;
 
 use Eccube\Repository\AbstractRepository;
-use Plugin\Management\Entity\Management;
+use Plugin\management\Entity\CustomerEvent;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Doctrine\Query\Queries;
 
 /**
- * リポジトリ
+ * 顧客イベントリポジトリ
+ * @extends AbstractRepository
  */
-class ManagementRepository extends AbstractRepository
+class CustomerEventRepository extends AbstractRepository
 {
     /**
      * @var Queries
@@ -34,7 +35,7 @@ class ManagementRepository extends AbstractRepository
      */
     public function __construct(RegistryInterface $registry, Queries $queries)
     {
-        parent::__construct($registry, Management::class);
+        parent::__construct($registry, CustomerEvent::class);
         $this->queries = $queries;
     }
 }

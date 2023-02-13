@@ -12,8 +12,9 @@ docker logs manage-eccube-ec-cube-1 -f
 # bash
 docker exec -it manage-eccube-ec-cube-1 bash
 ## コンテナ上
-# プラグイン一式をPlugin配下にコピー
-cp -fr /management ./app/Plugin
+# Plugin配下にシンボリックを設定
+cd /var/www/html
+ln -s /management ./app/Plugin
 # アンイストール
 bin/console eccube:plugin:uninstall --code management
 # インストール
@@ -35,3 +36,10 @@ composer run-script -l
   * PlayWright入れてみたい
 * 開発環境
   * 色々入れたい
+* CSV登録関係
+  * 一旦放置(必要ないから)
+* controller.phpの集約
+  * インタフェース作るのもありかも？
+* 標準に存在するファイルの実装
+  * 拡張するイメージ
+* プラグインの物理フォルダ名が小文字になってる
