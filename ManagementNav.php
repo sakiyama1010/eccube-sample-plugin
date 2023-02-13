@@ -23,6 +23,7 @@ class ManagementNav implements EccubeNav
     public static function getNav()
     {
         return [
+            // 勉強用
             'sample' => [
                 'name' => 'サンプル管理',
                 'icon' => 'fa-comment',
@@ -41,23 +42,32 @@ class ManagementNav implements EccubeNav
                     ]
                 ]
             ],
-            'management' => [
-                'name' => 'テスト管理',
-                'icon' => 'fa-coins',
+            'customer' => [
+                'name' => '顧客管理',
+                'icon' => 'fa-user-tie',
                 'children' => [
-                    'management_master' => [
-                        'name' => 'テスト一覧',
-                        'url' => 'admin_management',
+                    // 顧客案件管理
+                    'customer_project' => [
+                        'name' => 'admin.customer.customer_project_list',
+                        'url' => 'admin_customer_project',
                     ],
-                    'management_edit' => [
-                        'name' => 'テスト登録',
-                        'url' => 'admin_management_new',
+                    // 顧客イベント管理
+                    'customer_event' => [
+                        'name' => 'admin.customer.customer_event_list',
+                        'url' => 'admin_customer_event',
                     ],
-                    'management_csv_import' => [
-                        'name' => 'テストCSV登録',
-                        'url' => 'admin_management_csv_import',
-                    ]
-                ]
+                ],
+            ],
+            'member' => [
+                'name' => 'メンバー管理',
+                'icon' => 'fa-user',
+                'children' => [
+                    // TODO:メンバー(社員)管理
+                    'customer_project' => [
+                        'name' => 'admin.customer.customer_project_list',
+                        'url' => 'admin_customer_project',
+                    ],
+                ],
             ],
         ];
     }

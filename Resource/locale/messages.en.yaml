@@ -1,0 +1,7 @@
+
+#--------------------------------------------------
+# management
+#--------------------------------------------------
+# nav
+admin.customer.customer_project_list: project
+admin.customer.customer_event_list: event

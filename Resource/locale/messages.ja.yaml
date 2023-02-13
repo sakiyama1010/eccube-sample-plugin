@@ -17,3 +17,18 @@ admin.sample.multi_search_label: マルチ検索
 admin.sample.title: サンプル名
 admin.sample.detail: 詳細
 admin.sample.sample_info: サンプル情報
+
+#--------------------------------------------------
+# management
+#--------------------------------------------------
+# nav
+admin.customer.customer_project_list: 顧客案件管理
+admin.customer.customer_event_list: 顧客イベント管理
+
+# twig
+admin.customer.customer_project_management: 顧客案件管理
+admin.customer.customer_event_management: 顧客イベント管理
+
+admin.customer_event.id: ID
+admin.customer_event.customer_code: 顧客コード
+admin.customer_event.event_summary: イベント概要

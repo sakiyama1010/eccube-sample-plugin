@@ -11,10 +11,10 @@
  * file that was distributed with this source code.
  */
 
-namespace Plugin\management\Repository;
+namespace Plugin\management\Repository\Customer;
 
 use Eccube\Repository\AbstractRepository;
-use Plugin\management\Entity\CustomerEvent;
+use Plugin\management\Entity\Customer\CustomerEvent;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Doctrine\Query\Queries;
 
@@ -37,5 +37,26 @@ class CustomerEventRepository extends AbstractRepository
     {
         parent::__construct($registry, CustomerEvent::class);
         $this->queries = $queries;
+    }
+
+
+    /**
+     * @param array $searchData
+     * @return QueryBuilder
+     */
+    public function getQueryBuilderBySearchData($searchData)
+    {
+        $qb = $this->createQueryBuilder('ce')
+                // 会員テーブルjoin TODO  
+                //->innerJoin('Eccube\Entity\Customer', 'c', 'WITH', 'c.customer_code = ce.customer_code')
+            ->select('ce');
+
+        if (isset($searchData['customerCode'])) {
+            $qb
+                ->andWhere("ce.customer_code = :customer_code")
+                ->setParameter('customer_code', $searchData['customerCode']);
+        }
+
+        return $qb;
     }
 }

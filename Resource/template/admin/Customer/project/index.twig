@@ -1,0 +1,23 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends '@admin/default_frame.twig' %}
+
+{% set menus = ['customer_event', 'customer_event_master'] %}
+
+{% block title %}{{ 'admin.customer.customer_project_list'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.customer_event.customer_event_management'|trans }}{% endblock %}
+
+
+
+{% block main %}
+    <form name="search_form" id="search_form" method="post" action="">
+    </form>
+{% endblock %}

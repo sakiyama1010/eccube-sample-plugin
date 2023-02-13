@@ -17,105 +17,109 @@ use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\AbstractEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * 自己学習用エンティティ
- *
- * @ORM\Table(name="plg_sample")
- * @ORM\Entity(repositoryClass="Plugin\management\Repository\SampleRepository")
- */
-class Sample extends AbstractEntity
-{
+// Trait追加時、名前競合を防ぐために設定する必要がある
+// https://eccube.hatenablog.com/entry/add-trait-for-plugin-entity
+if (!class_exists('\Plugin\management\Entity\Sample')) {
+
     /**
-     * @var int ID項目のサンプル
+     * 自己学習用エンティティ
      *
-     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\Table(name="plg_sample")
+     * @ORM\Entity(repositoryClass="Plugin\management\Repository\SampleRepository")
      */
-    private $id;
-
-    /**
-     * @var string 必須文字列サンプル
-     *
-     * @ORM\Column(name="title", type="string", length=100)
-     * @Assert\Length(max=100)
-     */
-    private $title;
-
-    /**
-     * @var string|null NULL許容文字列サンプル
-     *
-     * @ORM\Column(name="detail", type="string", length=255, nullable=true)
-     */
-    private $detail;
-
-    /**
-     * @var string|null 数値サンプル
-     *
-     * @ORM\Column(name="count", type="decimal", precision=12, scale=2, nullable=true, options={"unsigned":true,"default":0})
-     */
-    private $count = 0;
-
-    /**
-     * @var \DateTime 日付サンプル
-     *
-     * @ORM\Column(name="create_date", type="datetimetz")
-     */
-    private $create_date;
-
-    /**
-     * @return string
-     */
-    public function getTitle()
+    class Sample extends AbstractEntity
     {
-        return $this->title;
+        /**
+         * @var int ID項目のサンプル
+         *
+         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         * @ORM\Id
+         * @ORM\GeneratedValue(strategy="IDENTITY")
+         */
+        private $id;
+
+        /**
+         * @var string 必須文字列サンプル
+         *
+         * @ORM\Column(name="title", type="string", length=100)
+         * @Assert\Length(max=100)
+         */
+        private $title;
+
+        /**
+         * @var string|null NULL許容文字列サンプル
+         *
+         * @ORM\Column(name="detail", type="string", length=255, nullable=true)
+         */
+        private $detail;
+
+        /**
+         * @var string|null 数値サンプル
+         *
+         * @ORM\Column(name="count", type="decimal", precision=12, scale=2, nullable=true, options={"unsigned":true,"default":0})
+         */
+        private $count = 0;
+
+        /**
+         * @var \DateTime 日付サンプル
+         *
+         * @ORM\Column(name="create_date", type="datetimetz")
+         */
+        private $create_date;
+
+        /**
+         * @return string
+         */
+        public function getTitle()
+        {
+            return $this->title;
+        }
+
+        /**
+         * @param string|null $title
+         * @return Sample
+         */
+        public function setTitle(string $title = null)
+        {
+            $this->title = $title;
+            return $this;
+        }
+
+        /**
+         * @return string|null
+         */
+        public function getDetail()
+        {
+            return $this->detail;
+        }
+
+        /**
+         * @param string|null $detail
+         * @return Sample
+         */
+        public function setDetail(string $detail = null)
+        {
+            $this->detail = $detail;
+            return $this;
+        }
+
+        /**
+         * @return int|null
+         */
+        public function getId()
+        {
+            return $this->id;
+        }
+
+        /**
+         * @param \DateTime|null $create_date
+         * @return Sample
+         */
+        public function setCreateDate(\DateTime $create_date = null)
+        {
+            $this->create_date = $create_date;
+            return $this;
+        }
+
     }
-
-    /**
-     * @param string|null $title
-     * @return Sample
-     */
-    public function setTitle(string $title = null)
-    {
-        $this->title = $title;
-        return $this;
-    }
-
-    /**
-     * @return string|null
-     */
-    public function getDetail()
-    {
-        return $this->detail;
-    }
-
-    /**
-     * @param string|null $detail
-     * @return Sample
-     */
-    public function setDetail(string $detail = null)
-    {
-        $this->detail = $detail;
-        return $this;
-    }
-
-    /**
-     * @return int|null
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param \DateTime|null $create_date
-     * @return Sample
-     */
-    public function setCreateDate(\DateTime $create_date = null)
-    {
-        $this->create_date = $create_date;
-        return $this;
-    }
-
-
 }

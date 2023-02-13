@@ -1,0 +1,134 @@
+{#
+This file is part of EC-CUBE
+
+Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+
+http://www.ec-cube.co.jp/
+
+For the full copyright and license information, please view the LICENSE
+file that was distributed with this source code.
+#}
+{% extends '@admin/default_frame.twig' %}
+
+{% set menus = ['admin.customer.customer_event_list', 'customer_event_master'] %}
+
+{% block title %}{{ 'admin.customer.customer_event_list'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.customer.customer_event_management'|trans }}{% endblock %}
+
+{% form_theme searchForm '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
+
+{% block main %}
+    <form name="search_form" id="search_form" method="post" action="">
+        {{ form_widget(searchForm._token) }}
+        <div class="c-outsideBlock">
+            <div class="c-outsideBlock__contents">
+                <div class="row justify-content-start">
+                    <div class="col-6">
+                        <div class="mb-2">
+                            <label class="col-form-label" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.sample.multi_search_label'|trans }}">{{ 'admin.customer_event.customer_code'|trans }}<i class="fa fa-question-circle fa-lg ms-1"></i></label>
+                            {{ form_widget(searchForm.customerCode) }}
+                            {{ form_errors(searchForm.customerCode) }}
+                        </div>
+                        <div class="d-inline-block mb-3 collapsed" data-bs-toggle="collapse" href="#searchDetail" aria-expanded="false" aria-controls="searchDetail"><a><i class="fa fw-bold me-1 fa-plus-square-o"></i><span class="fw-bold">{{ 'admin.common.search_detail'|trans }}</span></a></div>
+                    </div>
+                </div>
+            </div>
+    </form>
+
+        <div class="c-contentsArea__cols">
+        <div class="c-contentsArea__primaryCol">
+            <div class="c-primaryCol">
+                <div class="d-block mb-3">
+                    <a id="addNew" class="btn btn-ec-regular" href="{{ url('admin_customer_event_new') }}">{{ 'admin.common.create__new'|trans }}</a>
+                </div>
+                    {% if pagination and pagination.totalItemCount %}
+                        <div class="row justify-content-between mb-2">
+                            <div class="col-6"></div>
+                            <div class="col-5 text-end">
+                                {#Dropdown page count#}
+                                <div class="d-inline-block me-2 align-bottom">
+                                    <select class="form-select" onchange="location = this.value;">
+                                        {% for pageMax in pageMaxis %}
+                                            <option {% if pageMax.name == page_count %} selected {% endif %}
+                                                    value="{{ path('admin_customer_event_page', {'page_no': 1, 'page_count': pageMax.name }) }}">
+                                                {{ 'admin.common.count'|trans({ '%count%': pageMax.name }) }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card rounded border-0 mb-4 d-block">
+                            <div class="card-body p-0">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th class="border-top-0 pt-2 pb-3 ps-3 text-nowrap">{{ 'admin.customer_event.id'|trans }}<a href="#" class="js-listSort" data-sortkey="customer_id"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
+                                        <th class="border-top-0 pt-2 pb-3">{{ 'admin.customer_event.customer_code'|trans }}<a href="#" class="js-listSort" data-sortkey="name"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
+                                        <th class="border-top-0 pt-2 pb-3">イベント開始日</th>
+                                        <th class="border-top-0 pt-2 pb-3">イベント終了日</th>
+                                        <th class="border-top-0 pt-2 pb-3">{{ 'admin.customer_event.event_summary'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-3">&nbsp;</th>
+                                        <th class="border-top-0 pt-2 pb-3 pe-3">&nbsp;</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for customerEvent in pagination %}
+                                        <tr id="ex-sample-{{ customerEvent.id }}">
+                                            <td class="align-middle ps-3">{{ customerEvent.id }}</td>
+                                            <td class="align-middle">{{ customerEvent.customerCode }}</td>
+                                            <td class="align-middle">イベント開始日</td>
+                                            <td class="align-middle">イベント終了日</td>
+                                            <td class="align-middle">{{ customerEvent.eventSummary }}</td>
+                                            <td class="align-middle pe-3">
+                                                <div class="text-end">
+                                                    <div class="px-1 d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.delete'|trans }}">
+                                                        <a class="btn btn-ec-actionIcon" data-bs-toggle="modal" data-bs-target="#discontinuance-{{ customerEvent.id }}">
+                                                            <i class="fa fa-close fa-lg text-secondary" aria-hidden="true"></i>
+                                                        </a>
+                                                    </div>
+                                                    <div class="modal fade" id="discontinuance-{{ customerEvent.id }}" tabindex="-1" role="dialog" aria-labelledby="discontinuance" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title fw-bold">
+                                                                        {{ 'admin.common.delete_modal__title'|trans }}</h5>
+                                                                    <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div><!-- /.text-end -->
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                                <div class="row justify-content-md-center mb-4">
+                                    {% if pagination.totalItemCount > 0 %}
+                                        {% include "@admin/pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_sample_page' } %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+
+                    {% elseif has_errors %}
+                    検索エラー
+                        <div class="card rounded border-0">
+                            <div class="card-body p-4">
+                                <div class="text-center text-muted mb-4 h5">{{ 'admin.common.search_invalid_condition'|trans }}</div>
+                                <div class="text-center text-muted">{{ 'admin.common.search_try_change_condition'|trans }}</div>
+                            </div>
+                        </div>
+                    {% else %}
+                    検索0件{{ pagination.totalItemCount}}
+                        <div class="card rounded border-0">
+                            <div class="card-body p-4">
+                                <div class="text-center text-muted mb-4 h5">{{ 'admin.common.search_no_result'|trans }}</div>
+                                <div class="text-center text-muted">{{ 'admin.common.search_try_change_condition'|trans }}</div>
+                                <div class="text-center text-muted">{{ 'admin.common.search_try_advanced_search'|trans }}</div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div></div></div>
+
+{% endblock %}

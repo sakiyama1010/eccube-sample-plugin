@@ -17,171 +17,174 @@ use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\AbstractEntity;
 use Eccube\Entity\Master\CsvType;
 
-/**
- * SampleConfig
- *
- * @ORM\Table(name="plg_sample_config")
- * @ORM\Entity(repositoryClass="Plugin\management\Repository\SampleConfigRepository")
- */
-class SampleConfig extends AbstractEntity
-{
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer", options={"unsigned":true})
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $id;
+if (!class_exists('\Plugin\management\Entity\SampleConfig')) {
 
     /**
-     * @var int
+     * SampleConfig
      *
-     * @ORM\Column(name="review_max", type="smallint", nullable=true, options={"unsigned":true, "default":5})
+     * @ORM\Table(name="plg_sample_config")
+     * @ORM\Entity(repositoryClass="Plugin\management\Repository\SampleConfigRepository")
      */
-    private $review_max;
-
-    /**
-     * @var \Eccube\Entity\Master\CsvType
-     *
-     * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\CsvType")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="csv_type_id", nullable=true, referencedColumnName="id")
-     * })
-     */
-    private $CsvType;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="create_date", type="datetimetz")
-     */
-    private $create_date;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="update_date", type="datetimetz")
-     */
-    private $update_date;
-
-    /**
-     * Set product_review config id.
-     *
-     * @param string $id
-     *
-     * @return SampleConfig
-     */
-    public function setId($id)
+    class SampleConfig extends AbstractEntity
     {
-        $this->id = $id;
+        /**
+         * @var int
+         *
+         * @ORM\Column(name="id", type="integer", options={"unsigned":true})
+         * @ORM\Id
+         * @ORM\GeneratedValue(strategy="IDENTITY")
+         */
+        private $id;
 
-        return $this;
-    }
+        /**
+         * @var int
+         *
+         * @ORM\Column(name="review_max", type="smallint", nullable=true, options={"unsigned":true, "default":5})
+         */
+        private $review_max;
 
-    /**
-     * Get id.
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
+        /**
+         * @var \Eccube\Entity\Master\CsvType
+         *
+         * @ORM\ManyToOne(targetEntity="Eccube\Entity\Master\CsvType")
+         * @ORM\JoinColumns({
+         *   @ORM\JoinColumn(name="csv_type_id", nullable=true, referencedColumnName="id")
+         * })
+         */
+        private $CsvType;
 
-    /**
-     * Get ReviewMax.
-     *
-     * @return int
-     */
-    public function getReviewMax()
-    {
-        return $this->review_max;
-    }
+        /**
+         * @var \DateTime
+         *
+         * @ORM\Column(name="create_date", type="datetimetz")
+         */
+        private $create_date;
 
-    /**
-     * Set max.
-     *
-     * @param int $max
-     *
-     * @return Sample
-     */
-    public function setReviewMax($max)
-    {
-        $this->review_max = $max;
+        /**
+         * @var \DateTime
+         *
+         * @ORM\Column(name="update_date", type="datetimetz")
+         */
+        private $update_date;
 
-        return $this;
-    }
+        /**
+         * Set product_review config id.
+         *
+         * @param string $id
+         *
+         * @return SampleConfig
+         */
+        public function setId($id)
+        {
+            $this->id = $id;
 
-    /**
-     * Get CsvType
-     *
-     * @return \Eccube\Entity\Master\CsvType
-     */
-    public function getCsvType()
-    {
-        return $this->CsvType;
-    }
+            return $this;
+        }
 
-    /**
-     * Set CsvType
-     *
-     * @param CsvType $CsvType
-     *
-     * @return $this
-     */
-    public function setCsvType(CsvType $CsvType = null)
-    {
-        $this->CsvType = $CsvType;
+        /**
+         * Get id.
+         *
+         * @return int
+         */
+        public function getId()
+        {
+            return $this->id;
+        }
 
-        return $this;
-    }
+        /**
+         * Get ReviewMax.
+         *
+         * @return int
+         */
+        public function getReviewMax()
+        {
+            return $this->review_max;
+        }
 
-    /**
-     * Set create_date.
-     *
-     * @param \DateTime $createDate
-     *
-     * @return $this
-     */
-    public function setCreateDate($createDate)
-    {
-        $this->create_date = $createDate;
+        /**
+         * Set max.
+         *
+         * @param int $max
+         *
+         * @return Sample
+         */
+        public function setReviewMax($max)
+        {
+            $this->review_max = $max;
 
-        return $this;
-    }
+            return $this;
+        }
 
-    /**
-     * Get create_date.
-     *
-     * @return \DateTime
-     */
-    public function getCreateDate()
-    {
-        return $this->create_date;
-    }
+        /**
+         * Get CsvType
+         *
+         * @return \Eccube\Entity\Master\CsvType
+         */
+        public function getCsvType()
+        {
+            return $this->CsvType;
+        }
 
-    /**
-     * Set update_date.
-     *
-     * @param \DateTime $updateDate
-     *
-     * @return $this
-     */
-    public function setUpdateDate($updateDate)
-    {
-        $this->update_date = $updateDate;
+        /**
+         * Set CsvType
+         *
+         * @param CsvType $CsvType
+         *
+         * @return $this
+         */
+        public function setCsvType(CsvType $CsvType = null)
+        {
+            $this->CsvType = $CsvType;
 
-        return $this;
-    }
+            return $this;
+        }
 
-    /**
-     * Get update_date.
-     *
-     * @return \DateTime
-     */
-    public function getUpdateDate()
-    {
-        return $this->update_date;
+        /**
+         * Set create_date.
+         *
+         * @param \DateTime $createDate
+         *
+         * @return $this
+         */
+        public function setCreateDate($createDate)
+        {
+            $this->create_date = $createDate;
+
+            return $this;
+        }
+
+        /**
+         * Get create_date.
+         *
+         * @return \DateTime
+         */
+        public function getCreateDate()
+        {
+            return $this->create_date;
+        }
+
+        /**
+         * Set update_date.
+         *
+         * @param \DateTime $updateDate
+         *
+         * @return $this
+         */
+        public function setUpdateDate($updateDate)
+        {
+            $this->update_date = $updateDate;
+
+            return $this;
+        }
+
+        /**
+         * Get update_date.
+         *
+         * @return \DateTime
+         */
+        public function getUpdateDate()
+        {
+            return $this->update_date;
+        }
     }
 }
