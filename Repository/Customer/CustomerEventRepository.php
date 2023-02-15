@@ -47,7 +47,7 @@ class CustomerEventRepository extends AbstractRepository
     public function getQueryBuilderBySearchData($searchData)
     {
         $qb = $this->createQueryBuilder('ce')
-                // 会員テーブルjoin TODO  
+                // 会員テーブルjoin TODO
                 //->innerJoin('Eccube\Entity\Customer', 'c', 'WITH', 'c.customer_code = ce.customer_code')
             ->select('ce');
 

@@ -53,7 +53,7 @@ class TemplateEditAdminController extends AbstractController
      * @Route("/%eccube_admin_route%/sample/{id}/edit", requirements={"id" = "\d+"}, name="admin_sample_edit", methods={"GET", "POST"})
      * @Template("@management/admin/sample/edit.twig")
      * @param Request リクエスト
-     * @param RouterInterface 
+     * @param RouterInterface
      * @param id 該当データのID
      */
     public function index(Request $request, RouterInterface $router, $id = null)
@@ -105,7 +105,7 @@ class TemplateEditAdminController extends AbstractController
                     ['id' => $Sample->getId()]
                 );
             } else {
-                
+
                 // 失敗ログと失敗アラート設定
                 log_info($editform->getErrors(true));
                 $this->addError('admin.sample.save.failed', 'admin');
