@@ -15,6 +15,8 @@ file that was distributed with this source code.
 {% block title %}{{ 'admin.customer_event.customer_event_registration'|trans }}{% endblock %}
 {% block sub_title %}{{ 'admin.customer_event.customer_event_management'|trans }}{% endblock %}
 
+{% form_theme form '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
+
 {% block javascript %}
     <script>
     </script>
@@ -22,5 +24,74 @@ file that was distributed with this source code.
 
 {% block main %}
 <form name="customer_event_form" role="form" id="customer_event_form" method="post" class="h-adr" novalidate>
+
+{{ form_widget(form._token) }}
+<div class="c-contentsArea__cols">
+    <div class="c-contentsArea__primaryCol">
+        <div class="c-primaryCol">
+            <div class="card rounded border-0 mb-4">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-8"><span class="card-title">{{ 'admin.customerEvent.customerEvent_info'|trans }}</span>
+                        </div>
+                        <div class="col-4 text-end">
+                            <a data-bs-toggle="collapse" href="#customerEventInfo"
+                                aria-expanded="false" aria-controls="customerEventInfo">
+                                <i class="fa fa-angle-up fa-lg"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div><!-- card-header -->
+                <div class="collapse show ec-cardCollapse" id="customerEventInfo">
+                    <div class="card-body">
+                        {# 1行1項目 #}
+                        <div class="row mb-2">
+                            <div class="col-3">
+                                <span>{{ 'admin.customerEvent.title'|trans }}</span>
+                                {# 必須マーク #}
+                                <span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span>
+                            </div>
+                            <div class="col">
+                                {# 1画面に同じform_widgetを複数指定はできなそう #}
+                                {{ form_widget(form.customerCode) }}
+                                {{ form_errors(form.customerCode) }}
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-3">
+                                <span>{{ 'admin.customerEvent.detail'|trans }}</span>
+                            </div>
+                            <div class="col">
+                                {{ form_widget(form.eventSummary) }}
+                                {{ form_errors(form.eventSummary) }}
+                            </div>
+                        </div>
+            </div><!-- card rounded border-0 mb-4 -->
+        </div><!-- c-primaryCol -->
+    </div><!-- c-contentsArea__primaryCol -->
+</div><!-- c-contentsArea__cols -->
+
+<div class="c-conversionArea">
+    <div class="c-conversionArea__container">
+        <div class="row justify-content-between align-items-center">
+            <div class="col-6">
+                <div class="c-conversionArea__leftBlockItem">
+                    <a class="c-baseLink" href="{{ url('admin_customer_event', { resume: 1 }) }}">
+                        <i class="fa fa-backward" aria-hidden="true"></i>
+                        <span>戻る</span>
+                    </a>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="row align-items-center justify-content-end">
+                    <div class="col-auto">
+                        <button class="btn btn-ec-conversion px-5" type="submit">登録</button>
+                    </div>
+                </div>
+            </div>
+        </div><!-- row justify-content-between align-items-center -->
+    </div><!-- c-conversionArea__container -->
+</div><!-- c-conversionArea -->
+
 </form>
 {% endblock %}
