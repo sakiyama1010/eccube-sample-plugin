@@ -32,7 +32,7 @@ file that was distributed with this source code.
             <div class="card rounded border-0 mb-4">
                 <div class="card-header">
                     <div class="row">
-                        <div class="col-8"><span class="card-title">{{ 'admin.customerEvent.customerEvent_info'|trans }}</span>
+                        <div class="col-8"><span class="card-title">{{ 'admin.customer_event.customer_event_info'|trans }}</span>
                         </div>
                         <div class="col-4 text-end">
                             <a data-bs-toggle="collapse" href="#customerEventInfo"
@@ -47,23 +47,41 @@ file that was distributed with this source code.
                         {# 1行1項目 #}
                         <div class="row mb-2">
                             <div class="col-3">
-                                <span>{{ 'admin.customerEvent.title'|trans }}</span>
+                                <span>{{ 'admin.customer_event.customer_code'|trans }}</span>
                                 {# 必須マーク #}
                                 <span class="badge bg-primary ms-1">{{ 'admin.common.required'|trans }}</span>
                             </div>
                             <div class="col">
                                 {# 1画面に同じform_widgetを複数指定はできなそう #}
-                                {{ form_widget(form.customerCode) }}
-                                {{ form_errors(form.customerCode) }}
+                                {{ form_widget(form.customer_code) }}
+                                {{ form_errors(form.customer_code) }}
                             </div>
                         </div>
                         <div class="row mb-2">
                             <div class="col-3">
-                                <span>{{ 'admin.customerEvent.detail'|trans }}</span>
+                                <span>{{ 'admin.customer_event.event_summary'|trans }}</span>
                             </div>
                             <div class="col">
-                                {{ form_widget(form.eventSummary) }}
-                                {{ form_errors(form.eventSummary) }}
+                                {{ form_widget(form.event_summary) }}
+                                {{ form_errors(form.event_summary) }}
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-3">
+                                <span>{{ 'admin.customer_event.event_start_date'|trans }}</span>
+                            </div>
+                            <div class="col">
+                                {{ form_widget(form.event_start_date) }}
+                                {{ form_errors(form.event_start_date) }}
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-3">
+                                <span>{{ 'admin.customer_event.event_end_date'|trans }}</span>
+                            </div>
+                            <div class="col">
+                                {{ form_widget(form.event_end_date) }}
+                                {{ form_errors(form.event_end_date) }}
                             </div>
                         </div>
             </div><!-- card rounded border-0 mb-4 -->

@@ -17,6 +17,7 @@ use Eccube\Repository\AbstractRepository;
 use Plugin\management\Entity\Customer\CustomerEvent;
 use Doctrine\Persistence\ManagerRegistry as RegistryInterface;
 use Eccube\Doctrine\Query\Queries;
+use Plugin\management\Entity\CustomerTrait;
 
 /**
  * 顧客イベントリポジトリ
@@ -29,6 +30,10 @@ class CustomerEventRepository extends AbstractRepository
      */
     protected $queries;
 
+    public const COLUMNS = [
+        'customer_event_id' => 'c.id'
+    ];
+
     /**
      * @param RegistryInterface $registry
      * @param Queries $queries
@@ -39,7 +44,6 @@ class CustomerEventRepository extends AbstractRepository
         $this->queries = $queries;
     }
 
-
     /**
      * @param array $searchData
      * @return QueryBuilder
@@ -47,14 +51,27 @@ class CustomerEventRepository extends AbstractRepository
     public function getQueryBuilderBySearchData($searchData)
     {
         $qb = $this->createQueryBuilder('ce')
-                // 会員テーブルjoin TODO
-                //->innerJoin('Eccube\Entity\Customer', 'c', 'WITH', 'c.customer_code = ce.customer_code')
+            ->innerJoin('Eccube\Entity\Customer', 'c', 'WITH', 'c.customer_code = ce.customer_code')
+            //TODO
+            //->select('ce,c.company_name');
             ->select('ce');
 
-        if (isset($searchData['customerCode'])) {
+        if (isset($searchData['customer_code']) && !empty($searchData['customer_code'])) {
             $qb
                 ->andWhere("ce.customer_code = :customer_code")
-                ->setParameter('customer_code', $searchData['customerCode']);
+                ->setParameter('customer_code', $searchData['customer_code']);
+        }
+
+        // Order By
+        if (isset($searchData['sortkey']) && !empty($searchData['sortkey'])) {
+            $sortOrder = (isset($searchData['sorttype']) && $searchData['sorttype'] == 'a') ? 'ASC' : 'DESC';
+            $qb->orderBy(self::COLUMNS[$searchData['sortkey']], $sortOrder);
+            //$qb->addOrderBy('ce.event_end_date', 'DESC');
+            $qb->addOrderBy('ce.id', 'DESC');
+        } else {
+            //$qb->orderBy('ce.event_end_date', 'DESC');
+            //$qb->addOrderBy('ce.id', 'DESC');
+            $qb->orderBy('ce.id', 'DESC');
         }
 
         return $qb;

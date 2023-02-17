@@ -25,10 +25,19 @@ admin.sample.sample_info: サンプル情報
 admin.customer.customer_project_list: 顧客案件管理
 admin.customer.customer_event_list: 顧客イベント管理
 
+# flash messages
+admin.customer_event.save.complete: 顧客イベント情報を登録しました。
+admin.customer_event.save.failed: 顧客イベント情報登録に失敗しました。
+
 # twig
 admin.customer.customer_project_management: 顧客案件管理
-admin.customer.customer_event_management: 顧客イベント管理
+admin.customer_event.customer_event_management: 顧客イベント管理
+admin.customer_event.customer_event_list: 顧客イベント一覧
+admin.customer_event.customer_event_registration: 顧客イベント登録
 
+admin.customer_event.customer_event_info: 顧客イベント情報
 admin.customer_event.id: ID
 admin.customer_event.customer_code: 顧客コード
 admin.customer_event.event_summary: イベント概要
+admin.customer_event.event_start_date: イベント開始日
+admin.customer_event.event_end_date: イベント終了日

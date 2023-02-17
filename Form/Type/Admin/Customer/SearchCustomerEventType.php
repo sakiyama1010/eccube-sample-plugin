@@ -55,19 +55,21 @@ class SearchCustomerEventType extends AbstractType
     {
 
         $builder
-            ->add('customerCode', TextType::class, [
+            ->add('customer_code', TextType::class, [
                 'label' => 'admin.customer_event.customer_code',
-                'required' => true,
+                'required' => false,
                 'constraints' => [
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                 ],
             ])
-            ->add('eventSummary', TextType::class, [
-                'label' => 'admin.customer_event.event_summary',
-                'required' => true,
-                'constraints' => [
-                    new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
-                ],
+            // ソート用
+            ->add('sortkey', HiddenType::class, [
+                'label' => 'admin.list.sort.key',
+                'required' => false,
+            ])
+            ->add('sorttype', HiddenType::class, [
+                'label' => 'admin.list.sort.type',
+                'required' => false,
             ])
         ;
     }

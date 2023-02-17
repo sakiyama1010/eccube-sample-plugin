@@ -21,6 +21,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 // これがないと`$builder->getForm();`で怒られる
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\DateType;
 
 class CustomerEventType extends AbstractType
 {
@@ -55,19 +56,31 @@ class CustomerEventType extends AbstractType
     {
 
         $builder
-            ->add('customerCode', TextType::class, [
+            ->add('customer_code', TextType::class, [
                 'label' => 'admin.customer_event.customer_code',
                 'required' => true,
                 'constraints' => [
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                 ],
             ])
-            ->add('eventSummary', TextType::class, [
+            ->add('event_summary', TextType::class, [
                 'label' => 'admin.customer_event.event_summary',
                 'required' => true,
                 'constraints' => [
                     new Assert\Length(['max' => $this->eccubeConfig['eccube_stext_len']]),
                 ],
+            ])
+            ->add('event_start_date', DateType::class, [
+                'placeholder' => '',
+                'required' => false,
+                'input' => 'datetime',
+                'widget' => 'single_text',
+            ])
+            ->add('event_end_date', DateType::class, [
+                'placeholder' => '',
+                'required' => false,
+                'input' => 'datetime',
+                'widget' => 'single_text',
             ])
         ;
     }

@@ -10,10 +10,10 @@ file that was distributed with this source code.
 #}
 {% extends '@admin/default_frame.twig' %}
 
-{% set menus = ['admin.customer.customer_event_list', 'customer_event_master'] %}
+{% set menus = ['admin.customer_event.customer_event_list', 'customer_event_master'] %}
 
-{% block title %}{{ 'admin.customer.customer_event_list'|trans }}{% endblock %}
-{% block sub_title %}{{ 'admin.customer.customer_event_management'|trans }}{% endblock %}
+{% block title %}{{ 'admin.customer_event.customer_event_list'|trans }}{% endblock %}
+{% block sub_title %}{{ 'admin.customer_event.customer_event_management'|trans }}{% endblock %}
 
 {% form_theme searchForm '@admin/Form/bootstrap_4_horizontal_layout.html.twig' %}
 
@@ -26,13 +26,25 @@ file that was distributed with this source code.
                     <div class="col-6">
                         <div class="mb-2">
                             <label class="col-form-label" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'tooltip.sample.multi_search_label'|trans }}">{{ 'admin.customer_event.customer_code'|trans }}<i class="fa fa-question-circle fa-lg ms-1"></i></label>
-                            {{ form_widget(searchForm.customerCode) }}
-                            {{ form_errors(searchForm.customerCode) }}
+                            {{ form_widget(searchForm.customer_code) }}
+                            {{ form_errors(searchForm.customer_code) }}
                         </div>
-                        <div class="d-inline-block mb-3 collapsed" data-bs-toggle="collapse" href="#searchDetail" aria-expanded="false" aria-controls="searchDetail"><a><i class="fa fw-bold me-1 fa-plus-square-o"></i><span class="fw-bold">{{ 'admin.common.search_detail'|trans }}</span></a></div>
                     </div>
                 </div>
             </div>
+            {{ form_widget(searchForm.sortkey, {'attr': {'class': 'js-listSort-key'}}) }}
+            {{ form_widget(searchForm.sorttype, {'attr': {'class': 'js-listSort-type'}}) }}
+        </div>
+        <div class="c-outsideBlock__contents mb-5">
+            <button type="submit" class="btn btn-ec-conversion px-5">{{ 'admin.common.search'|trans }}</button>&nbsp;
+            <a class="btn btn-ec-regular" href="{{ url('admin_customer_event') }}">クリア</a>
+            {% if pagination %}
+                <span class="fw-bold ms-2">{{ 'admin.common.search_result'|trans({'%count%':pagination.totalItemCount}) }}</span>
+            {% endif %}
+        </div>
+        <div class="c-outsideBlock__contents mb-5">
+            {{ include('@admin/search_items.twig', { 'form': searchForm }, ignore_missing = true) }}
+        </div>
     </form>
 
         <div class="c-contentsArea__cols">
@@ -44,6 +56,7 @@ file that was distributed with this source code.
                     {% if pagination and pagination.totalItemCount %}
                         <div class="row justify-content-between mb-2">
                             <div class="col-6"></div>
+
                             <div class="col-5 text-end">
                                 {#Dropdown page count#}
                                 <div class="d-inline-block me-2 align-bottom">
@@ -62,10 +75,10 @@ file that was distributed with this source code.
                                 <table class="table">
                                     <thead>
                                     <tr>
-                                        <th class="border-top-0 pt-2 pb-3 ps-3 text-nowrap">{{ 'admin.customer_event.id'|trans }}<a href="#" class="js-listSort" data-sortkey="customer_id"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
-                                        <th class="border-top-0 pt-2 pb-3">{{ 'admin.customer_event.customer_code'|trans }}<a href="#" class="js-listSort" data-sortkey="name"><i class="fa fa-arrow-up" aria-hidden="true"></i></a></th>
-                                        <th class="border-top-0 pt-2 pb-3">イベント開始日</th>
-                                        <th class="border-top-0 pt-2 pb-3">イベント終了日</th>
+                                        <th class="border-top-0 pt-2 pb-3 ps-3 text-nowrap">{{ 'admin.customer_event.id'|trans }}<a href="#" class="js-listSort" data-sortkey="customer_event_id"><i class="fa fa-arrow-down" aria-hidden="true"></i></a></th>
+                                        <th class="border-top-0 pt-2 pb-3">{{ 'admin.customer_event.customer_code'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-3">{{ 'admin.customer_event.event_start_date'|trans }}</th>
+                                        <th class="border-top-0 pt-2 pb-3">{{ 'admin.customer_event.event_end_date'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-3">{{ 'admin.customer_event.event_summary'|trans }}</th>
                                         <th class="border-top-0 pt-2 pb-3">&nbsp;</th>
                                         <th class="border-top-0 pt-2 pb-3 pe-3">&nbsp;</th>
@@ -74,11 +87,11 @@ file that was distributed with this source code.
                                     <tbody>
                                     {% for customerEvent in pagination %}
                                         <tr id="ex-sample-{{ customerEvent.id }}">
-                                            <td class="align-middle ps-3">{{ customerEvent.id }}</td>
-                                            <td class="align-middle">{{ customerEvent.customerCode }}</td>
-                                            <td class="align-middle">イベント開始日</td>
-                                            <td class="align-middle">イベント終了日</td>
-                                            <td class="align-middle">{{ customerEvent.eventSummary }}</td>
+                                            <td class="align-middle ps-3"><a href="{{ url('admin_customer_event_edit', { 'id': customerEvent.id}) }}">{{ customerEvent.id }}</a></td>
+                                            <td class="align-middle">{{ customerEvent.customer_code }}</td>
+                                            <td class="align-middle">{{ customerEvent.event_start_date|date_day }}</td>
+                                            <td class="align-middle">{{ customerEvent.event_end_date|date_day }}</td>
+                                            <td class="align-middle">{{ customerEvent.event_summary }}</td>
                                             <td class="align-middle pe-3">
                                                 <div class="text-end">
                                                     <div class="px-1 d-inline-block" data-bs-toggle="tooltip" data-bs-placement="top" title="{{ 'admin.common.delete'|trans }}">
@@ -93,6 +106,17 @@ file that was distributed with this source code.
                                                                     <h5 class="modal-title fw-bold">
                                                                         {{ 'admin.common.delete_modal__title'|trans }}</h5>
                                                                     <button class="btn-close" type="button" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                <div class="modal-body text-start">
+                                                                    <p class="text-start">
+                                                                        {{ 'admin.common.delete_modal__message'|trans({ '%name%' : customerEvent.id }) }}</p>
+                                                                </div>
+                                                                <div class="modal-footer">
+                                                                    <button class="btn btn-ec-sub" type="button" data-bs-dismiss="modal">
+                                                                        {{ 'admin.common.cancel'|trans }}
+                                                                    </button>
+                                                                    <a href="{{ url('admin_customer_event_delete', {'id' : customerEvent.id}) }}" class="btn btn-ec-delete"{{ csrf_token_for_anchor() }} data-method="delete" data-confirm="false">
+                                                                        {{ 'admin.common.delete'|trans }}
+                                                                    </a>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -105,14 +129,12 @@ file that was distributed with this source code.
                                 </table>
                                 <div class="row justify-content-md-center mb-4">
                                     {% if pagination.totalItemCount > 0 %}
-                                        {% include "@admin/pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_sample_page' } %}
+                                        {% include "@admin/pager.twig" with { 'pages' : pagination.paginationData, 'routes' : 'admin_customer_event_page' } %}
                                     {% endif %}
                                 </div>
                             </div>
                         </div>
-
                     {% elseif has_errors %}
-                    検索エラー
                         <div class="card rounded border-0">
                             <div class="card-body p-4">
                                 <div class="text-center text-muted mb-4 h5">{{ 'admin.common.search_invalid_condition'|trans }}</div>
@@ -120,7 +142,6 @@ file that was distributed with this source code.
                             </div>
                         </div>
                     {% else %}
-                    検索0件{{ pagination.totalItemCount}}
                         <div class="card rounded border-0">
                             <div class="card-body p-4">
                                 <div class="text-center text-muted mb-4 h5">{{ 'admin.common.search_no_result'|trans }}</div>
@@ -129,6 +150,7 @@ file that was distributed with this source code.
                             </div>
                         </div>
                     {% endif %}
-                </div></div></div>
-
+                </div>
+            </div>
+        </div>
 {% endblock %}

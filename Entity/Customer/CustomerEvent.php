@@ -1,5 +1,16 @@
 <?php
 
+/*
+ * This file is part of EC-CUBE
+ *
+ * Copyright(c) EC-CUBE CO.,LTD. All Rights Reserved.
+ *
+ * https://www.ec-cube.co.jp/
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace Plugin\management\Entity\Customer;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -30,14 +41,14 @@ if (!class_exists('\Plugin\management\Entity\Customer\CustomerEvent')) {
          * @ORM\Column(name="customer_code", type="string", length=100)
          * @Assert\NotBlank
          */
-        private $customerCode;
+        private $customer_code;
 
         /**
          * @var \DateTime イベント開始日時
          *
          * @ORM\Column(name="event_start_date", type="datetimetz")
          */
-        private $eventStartDate;
+        private $event_start_date;
 
 
         /**
@@ -45,7 +56,7 @@ if (!class_exists('\Plugin\management\Entity\Customer\CustomerEvent')) {
          *
          * @ORM\Column(name="event_end_date", type="datetimetz")
          */
-        private $eventEndDate;
+        private $event_end_date;
 
         /**
          * @var string 概要
@@ -53,7 +64,7 @@ if (!class_exists('\Plugin\management\Entity\Customer\CustomerEvent')) {
          * @ORM\Column(name="event_summary", type="string", length=255)
          * @Assert\NotBlank
          */
-        private $eventSummary;
+        private $event_summary;
 
         public function getId(): ?int
         {
@@ -62,48 +73,48 @@ if (!class_exists('\Plugin\management\Entity\Customer\CustomerEvent')) {
 
         public function getCustomerCode(): ?string
         {
-            return $this->customerCode;
+            return $this->customer_code;
         }
 
-        public function setCustomerCode(string $customerCode): self
+        public function setCustomerCode(string $customer_code): self
         {
-            $this->customerCode = $customerCode;
+            $this->customer_code = $customer_code;
 
             return $this;
         }
 
         public function getEventStartDate(): ?\DateTimeInterface
         {
-            return $this->eventStartDate;
+            return $this->event_start_date;
         }
 
-        public function setEventStartDate(\DateTimeInterface $eventStartDate): self
+        public function setEventStartDate(\DateTimeInterface $event_start_date): self
         {
-            $this->eventStartDate = $eventStartDate;
+            $this->event_start_date = $event_start_date;
 
             return $this;
         }
 
         public function getEventEndDate(): ?\DateTimeInterface
         {
-            return $this->eventEndDate;
+            return $this->event_end_date;
         }
 
-        public function setEventEndDate(\DateTimeInterface $eventEndDate): self
+        public function setEventEndDate(\DateTimeInterface $event_end_date): self
         {
-            $this->eventEndDate = $eventEndDate;
+            $this->event_end_date = $event_end_date;
 
             return $this;
         }
 
         public function getEventSummary(): ?string
         {
-            return $this->eventSummary;
+            return $this->event_summary;
         }
 
-        public function setEventSummary(string $eventSummary): self
+        public function setEventSummary(string $event_summary): self
         {
-            $this->eventSummary = $eventSummary;
+            $this->event_summary = $event_summary;
 
             return $this;
         }

@@ -13,6 +13,7 @@
 
 namespace Plugin\management\Controller\Admin\Customer;
 
+use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Repository\Master\PageMaxRepository;
 use Plugin\management\Repository\Customer\CustomerEventRepository;
@@ -47,14 +48,15 @@ class CustomerController extends AbstractController
     public function __construct(
         PageMaxRepository $pageMaxRepository,
         CustomerEventRepository $customerEventRepository
-    ) {
+    )
+    {
         $this->pageMaxRepository = $pageMaxRepository;
         $this->customerEventRepository = $customerEventRepository;
     }
 
     /**
      * 顧客イベント一覧
-     * @Route("/%eccube_admin_route%/customer/event", name="admin_customer_event", methods={"GET"})
+     * @Route("/%eccube_admin_route%/customer/event", name="admin_customer_event", methods={"GET", "POST"})
      * @Route("/%eccube_admin_route%/customer/event/page/{page_no}", requirements={"page_no" = "\d+"}, name="admin_customer_event_page", methods={"GET", "POST"})
      * @Template("@management/admin/Customer/event/index.twig")
      */
@@ -130,6 +132,49 @@ class CustomerController extends AbstractController
     }
 
     /**
+     * 削除
+     * @Route("/%eccube_admin_route%/customer/event/{id}/delete", requirements={"id" = "\d+"}, name="admin_customer_event_delete", methods={"DELETE"})
+     */
+    public function delete(Request $request, $id)
+    {
+        $this->isTokenValid();
+
+        log_info('顧客イベント削除開始', [$id]);
+
+        $page_no = intval($this->session->get('eccube.admin.customer_event.search.page_no'));
+        $page_no = $page_no ? $page_no : Constant::ENABLED;
+
+        $CustomerEvent = $this->customerEventRepository->find($id);
+
+        if (!$CustomerEvent) {
+            $this->deleteMessage();
+
+            return $this->redirect($this->generateUrl(
+                'admin_customer_event_page',
+                ['page_no' => $page_no]
+            ) . '?resume=' . Constant::ENABLED);
+        }
+
+        try {
+            $this->entityManager->remove($CustomerEvent);
+            $this->entityManager->flush();
+            $this->addSuccess('admin.common.delete_complete', 'admin');
+        } catch (ForeignKeyConstraintViolationException $e) {
+            log_error('顧客イベント削除失敗', [$e]);
+
+            $message = trans('admin.common.delete_error_foreign_key', ['%id%' => $CustomerEvent->id]);
+            $this->addError($message, 'admin');
+        }
+
+        log_info('顧客イベント削除完了', [$id]);
+
+        return $this->redirect($this->generateUrl(
+            'admin_customer_event_page',
+            ['page_no' => $page_no]
+        ) . '?resume=' . Constant::ENABLED);
+    }
+
+    /**
      * 顧客イベント登録
      * @Route("/%eccube_admin_route%/customer/event/new", name="admin_customer_event_new", methods={"GET", "POST"})
      * @Template("@management/admin/Customer/event/edit.twig")
@@ -147,15 +192,12 @@ class CustomerController extends AbstractController
             if ($form->isValid()) {
                 // フォーム内容で更新
                 $customerEvent = $form->getData();
-                // 現在日時を設定
-                $customerEvent->setEventStartDate(new \DateTime());
-                $customerEvent->setEventEndDate(new \DateTime());
                 $this->entityManager->persist($customerEvent);
                 $this->entityManager->flush($customerEvent);
 
                 // 成功ログと成功アラート設定
                 log_info('customerEvent edit success');
-                $this->addSuccess('admin.sample.save.complete', 'admin');
+                $this->addSuccess('admin.customer_event.save.complete', 'admin');
 
                 // 更新画面にリダイレクト
                 return $this->redirectToRoute(
@@ -164,7 +206,7 @@ class CustomerController extends AbstractController
                 );
             } else {
                 // 失敗ログと失敗アラート設定
-                log_info($editform->getErrors(true));
+                log_info($form->getErrors(true));
                 $this->addError('admin.customer_event.save.failed', 'admin');
             }
         }
