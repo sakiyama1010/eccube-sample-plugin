@@ -23,38 +23,45 @@ class ManagementNav implements EccubeNav
     public static function getNav()
     {
         return [
-            // 勉強用
-            'sample' => [
-                'name' => 'サンプル管理',
-                'icon' => 'fa-comment',
+            'supplier' => [
+                'name' => '取引先管理',
+                'icon' => 'fa-building',
                 'children' => [
-                    'sample_master' => [
-                        'name' => 'サンプル一覧',
-                        'url' => 'admin_sample',
+                    // 取引先管理
+                    'supplier' => [
+                        'name' => 'admin.supplier.supplier_list',
+                        'url' => 'admin_supplier',
                     ],
-                    'sample_edit' => [
-                        'name' => 'サンプル登録',
-                        'url' => 'admin_sample_new',
+                    // 顧客管理(既存)
+                    'member' => [
+                        'name' => 'admin.customer.customer_list',
+                        'url' => 'admin_customer',
                     ],
-                    'sample_csv_import' => [
-                        'name' => 'サンプルCSV登録',
-                        'url' => 'admin_sample_csv_import',
-                    ]
-                ]
+                    // 取引先案件管理
+                    'supplier_project' => [
+                        'name' => 'admin.supplier.supplier_project_list',
+                        'url' => 'admin_supplier_project',
+                    ],
+                    // 取引先イベント管理
+                    'supplier_event' => [
+                        'name' => 'admin.supplier.supplier_event_list',
+                        'url' => 'admin_supplier_event',
+                    ],
+                ],
             ],
-            'customer' => [
-                'name' => '顧客管理',
-                'icon' => 'fa-user-tie',
+            'cash_receipt_disbursement' => [
+                'name' => '入出金管理',
+                'icon' => 'fa-money',
                 'children' => [
-                    // 顧客案件管理
-                    'customer_project' => [
-                        'name' => 'admin.customer.customer_project_list',
-                        'url' => 'admin_customer_project',
+                    // 入金管理
+                    'receipt' => [
+                        'name' => 'admin.cash_receipt_disbursement.receipt_list',
+                        'url' => 'admin_receipt',
                     ],
-                    // 顧客イベント管理
-                    'customer_event' => [
-                        'name' => 'admin.customer.customer_event_list',
-                        'url' => 'admin_customer_event',
+                    // 出金管理
+                    'disbursement' => [
+                        'name' => 'admin.cash_receipt_disbursement.disbursement_list',
+                        'url' => 'admin_disbursement',
                     ],
                 ],
             ],
@@ -62,13 +69,19 @@ class ManagementNav implements EccubeNav
                 'name' => 'メンバー管理',
                 'icon' => 'fa-user',
                 'children' => [
-                    // TODO:メンバー(社員)管理
-                    'customer_project' => [
-                        'name' => 'admin.customer.customer_project_list',
-                        'url' => 'admin_customer_project',
+                    // メンバー管理(既存)
+                    'member' => [
+                        'name' => 'admin.setting.system.member_management',
+                        'url' => 'admin_setting_system_member',
+                    ],
+                    // 勤怠管理
+                    'attendance' => [
+                        'name' => 'admin.member.attendance_list',
+                        'url' => 'admin_attendance',
                     ],
                 ],
             ],
+            
         ];
     }
 }

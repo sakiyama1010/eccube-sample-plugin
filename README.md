@@ -1,7 +1,6 @@
-# managemanet-plugin
+# management-plugin
 
 * 社内の管理システムとしてプラグインの開発をしていく
-* ECCUBEの勉強がてらサンプルコードも入ってる
 
 ## 使い方
 
@@ -28,6 +27,55 @@ bin/console eccube:plugin:enable --code management
 # キャッシュクリア
 bin/console cache:clear --no-warmup
 ```
+
+## 作りたい機能
+
+* 会員管理
+  * 顧客管理(会員管理を流用)
+* 取引先管理
+  * 取引先管理(Suppliers)
+  * 案件管理
+  * イベント管理
+* メンバー管理管理
+  * メンバー管理(メンバー管理を流用)
+  * 勤怠管理
+* 入出金管理
+  * 入金管理
+  * 出金管理
+    * 区分マスタ
+    * 日本円、ドル
+    * 概算フラグ
+* マスタデータ
+  * mtb_autorityの設定変更
+
+## 課題メモ
+
+* ライセンス
+  * ECCUBEをとりあえずコピー
+  * あとで考える
+* テスト
+  * PlayWrightをGithub Actionで実行する
+  * codeceptionを試してみる
+* joinしたテーブルの顧客名を出したい
+* プラグインの物理フォルダ名が小文字になってる
+* サンプルコードは消す
+  * 置換して入れられる状態を作りたい
+
+## 参考
+
+### 便利コマンド
+
+```sh
+# composerで使えるコマンド確認
+composer run-script -l
+# EntityからGetter/Setter/Repositoryを自動生成
+bin/console make:entity --regenerate
+```
+
+### 参考サイト
+
+* font awesome
+  * <https://fontawesome.com/v5/search?o=r&m=free>
 
 ### PlayWright
 
@@ -86,39 +134,3 @@ C:\Users\xxx\tests
 
 * Github Actionsで実行
   * <https://zenn.dev/keita_hino/articles/d38956a2f1880e>
-
-## 課題メモ
-
-* ライセンス
-  * ECCUBEをとりあえずコピー
-  * あとで考える
-* テスト
-  * PlayWrightをGithub Actionで実行する
-* 開発環境
-  * 色々入れたい
-* CSV登録関係
-  * 一旦放置(必要ないから)
-* controller.phpの集約
-  * インタフェース作るのもありかも？
-* 標準に存在するファイルの実装
-  * 拡張するイメージ
-* イベント管理画面
-  * 概要は20文字ぐらいで良い
-  * joinしたテーブルの顧客名を出したい
-* プラグインの物理フォルダ名が小文字になってる
-
-## 参考
-
-### 便利コマンド
-
-```sh
-# composerで使えるコマンド確認
-composer run-script -l
-# EntityからGetter/Setter/Repositoryを自動生成
-bin/console make:entity --regenerate
-```
-
-### 参考サイト
-
-* font awesome
-  * <https://fontawesome.com/v5/search?o=r&m=free>

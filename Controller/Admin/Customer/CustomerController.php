@@ -16,21 +16,32 @@ namespace Plugin\management\Controller\Admin\Customer;
 use Eccube\Common\Constant;
 use Eccube\Controller\AbstractController;
 use Eccube\Repository\Master\PageMaxRepository;
-use Plugin\management\Repository\Customer\CustomerEventRepository;
+use Eccube\Service\CsvExportService;
 use Eccube\Util\FormUtil;
+
 use Knp\Component\Pager\PaginatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Form\Form;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+
+use Plugin\management\Repository\Customer\CustomerEventRepository;
 use Plugin\management\Form\Type\Admin\Customer\SearchCustomerEventType;
 use Plugin\management\Form\Type\Admin\Customer\CustomerEventType;
 use Plugin\management\Entity\Customer\CustomerEvent;
 
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-
+/**
+ * 顧客コントローラークラス
+ * @extends AbstractController 
+ */
 class CustomerController extends AbstractController
 {
+    /**
+     * @var CsvExportService
+     */
+    protected $csvExportService;
+
     /**
      * @var PageMaxRepository
      */
@@ -42,16 +53,20 @@ class CustomerController extends AbstractController
     protected $customerEventRepository;
 
     /**
-     * @param PageMaxRepository $pageMaxRepository
+     * コンストラクタ
      * @param CustomerEventRepository $customerEventRepository
+     * @param PageMaxRepository $pageMaxRepository
+     * @param CsvExportService $csvExportService
      */
     public function __construct(
+        CustomerEventRepository $customerEventRepository,
         PageMaxRepository $pageMaxRepository,
-        CustomerEventRepository $customerEventRepository
+        CsvExportService $csvExportService
     )
     {
-        $this->pageMaxRepository = $pageMaxRepository;
         $this->customerEventRepository = $customerEventRepository;
+        $this->pageMaxRepository = $pageMaxRepository;
+        $this->csvExportService = $csvExportService;
     }
 
     /**
@@ -63,6 +78,7 @@ class CustomerController extends AbstractController
     public function eventIndex(Request $request, PaginatorInterface $paginator, $page_no = null)
     {
         $session = $this->session;
+
         $builder = $this->formFactory->createBuilder(SearchCustomerEventType::class);
         $searchForm = $builder->getForm();
         $pageMaxis = $this->pageMaxRepository->findAll();
@@ -107,7 +123,7 @@ class CustomerController extends AbstractController
             } else {
                 $page_no = 1;
                 $viewData = FormUtil::getViewData($searchForm);
-                $session->set('eccube.admin.sacustomer_eventmple.search', $viewData);
+                $session->set('eccube.admin.customer_event.search', $viewData);
                 $session->set('eccube.admin.customer_event.search.page_no', $page_no);
             }
             $searchData = FormUtil::submitAndGetData($searchForm, $viewData);
@@ -214,7 +230,6 @@ class CustomerController extends AbstractController
             'form' => $form->createView(),
             'CustomerEvent' => $customerEvent
         ];
-
     }
 
     /**
@@ -287,6 +302,56 @@ class CustomerController extends AbstractController
      * @Template("@management/admin/Customer/project/edit.twig")
      */
     public function projectEdit(Request $request)
+    {
+        return [];
+    }
+
+    //TODO
+    /**
+     * @Route("/%eccube_admin_route%/customer/project/new", name="admin_supplier", methods={"GET", "POST"})
+     * @Template("@management/admin/Customer/project/edit.twig")
+     */
+    public function admin_supplier(Request $request)
+    {
+        return [];
+    }
+    /**
+     * @Route("/%eccube_admin_route%/customer/project/new", name="admin_supplier_project", methods={"GET", "POST"})
+     * @Template("@management/admin/Customer/project/edit.twig")
+     */
+    public function admin_supplier_project(Request $request)
+    {
+        return [];
+    }
+    /**
+     * @Route("/%eccube_admin_route%/customer/project/new", name="admin_supplier_event", methods={"GET", "POST"})
+     * @Template("@management/admin/Customer/project/edit.twig")
+     */
+    public function admin_supplier_event(Request $request)
+    {
+        return [];
+    }
+    /**
+     * @Route("/%eccube_admin_route%/customer/project/new", name="admin_receipt", methods={"GET", "POST"})
+     * @Template("@management/admin/Customer/project/edit.twig")
+     */
+    public function admin_receipt(Request $request)
+    {
+        return [];
+    }
+    /**
+     * @Route("/%eccube_admin_route%/customer/project/new", name="admin_disbursement", methods={"GET", "POST"})
+     * @Template("@management/admin/Customer/project/edit.twig")
+     */
+    public function admin_disbursement(Request $request)
+    {
+        return [];
+    }
+    /**
+     * @Route("/%eccube_admin_route%/customer/project/new", name="admin_attendance", methods={"GET", "POST"})
+     * @Template("@management/admin/Customer/project/edit.twig")
+     */
+    public function admin_attendance(Request $request)
     {
         return [];
     }
