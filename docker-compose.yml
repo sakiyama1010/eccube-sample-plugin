@@ -28,7 +28,7 @@ services:
       - "var:/var/www/html/var"
       - "vendor:/var/www/html/vendor"
       - "node_modules:/var/www/html/node_modules"
-      # 出来るかわからんけど
+
       - ../management-plugin:/management
     environment:
       # EC-CUBE environments
@@ -39,6 +39,8 @@ services:
       DATABASE_CHARSET: 'utf8'
       MAILER_DSN: "smtp://mailcatcher:1025"
       ECCUBE_AUTH_MAGIC: "<change.me>"
+      # TODO:後で設定
+      #ECCUBE_ADMIN_ROUTE: /
     networks:
       - backend
 
