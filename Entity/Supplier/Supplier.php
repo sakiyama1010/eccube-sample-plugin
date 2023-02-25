@@ -11,20 +11,20 @@
  * file that was distributed with this source code.
  */
 
-namespace Plugin\management\Entity\Suppliers;
+namespace Plugin\Management42\Entity\Supplier;
 
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\AbstractEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-if (!class_exists('\Plugin\management\Entity\Suppliers\Suppliers')) {
+if (!class_exists('\Plugin\Management42\Entity\Supplier\Supplier')) {
     /**
      * 取引先
      *
-     * @ORM\Table(name="plg_suppliers")
-     * @ORM\Entity(repositoryClass="Plugin\management\Repository\Suppliers\SuppliersRepository")
+     * @ORM\Table(name="plg_Supplier")
+     * @ORM\Entity(repositoryClass="Plugin\Management42\Repository\Supplier\SupplierRepository")
      */
-    class Suppliers extends AbstractEntity
+    class Supplier extends AbstractEntity
     {
         /**
          * @var int id
@@ -125,6 +125,16 @@ if (!class_exists('\Plugin\management\Entity\Suppliers\Suppliers')) {
             $this->note = $note;
 
             return $this;
+        }
+
+        public function getCreateDate(): ?\DateTimeInterface
+        {
+            return $this->create_date;
+        }
+
+        public function getUpdateDate(): ?\DateTimeInterface
+        {
+            return $this->update_date;
         }
     }
 }

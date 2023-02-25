@@ -11,20 +11,20 @@
  * file that was distributed with this source code.
  */
 
-namespace Plugin\Management42\Entity\Customer;
+namespace Plugin\Management42\Entity\Supplier;
 
 use Doctrine\ORM\Mapping as ORM;
 use Eccube\Entity\AbstractEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-if (!class_exists('\Plugin\Management42\Entity\Customer\CustomerEvent')) {
+if (!class_exists('\Plugin\Management42\Entity\Supplier\SupplierEvent')) {
     /**
-     * 顧客イベント
+     * 取引先イベント
      *
-     * @ORM\Table(name="plg_customer_event")
-     * @ORM\Entity(repositoryClass="Plugin\Management42\Repository\Customer\CustomerEventRepository")
+     * @ORM\Table(name="plg_supplier_event")
+     * @ORM\Entity(repositoryClass="Plugin\Management42\Repository\Supplier\SupplierEventRepository")
      */
-    class CustomerEvent extends AbstractEntity
+    class SupplierEvent extends AbstractEntity
     {
         /**
          * @var int id
@@ -36,11 +36,12 @@ if (!class_exists('\Plugin\Management42\Entity\Customer\CustomerEvent')) {
         private $id;
 
         /**
-         * @var string|null 顧客コード
+         * エンティティを紐づけると依存度が高くなるからあえてこの書き方(TODO)
+         * @var string|null 取引先コード
          *
-         * @ORM\Column(name="customer_code", type="string", length=100)
+         * @ORM\Column(name="supplier_code", type="string", length=100)
          */
-        private $customer_code;
+        private $supplier_code;
 
         /**
          * @var \DateTime イベント開始日時
@@ -70,14 +71,14 @@ if (!class_exists('\Plugin\Management42\Entity\Customer\CustomerEvent')) {
             return $this->id;
         }
 
-        public function getCustomerCode(): ?string
+        public function getSupplierCode(): ?string
         {
-            return $this->customer_code;
+            return $this->supplier_code;
         }
 
-        public function setCustomerCode(string $customer_code): self
+        public function setSupplierCode(string $supplier_code): self
         {
-            $this->customer_code = $customer_code;
+            $this->supplier_code = $supplier_code;
 
             return $this;
         }
